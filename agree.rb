@@ -16,6 +16,7 @@ end
 post "/polls" do
   options = params["options"]
   poll_id = SecureRandom.uuid
+  options.push("Fuck you I'm Spiderman")
   options = options.split(/,\s+/)
   options = options.uniq
   Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}")
@@ -28,8 +29,19 @@ end
 # Participate in a poll and see results
 get "/polls/:poll" do
   @poll_id = params['poll']
-  @options = File.read(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/data").split(",")
-  @options.push("Fuck you I'm Spiderman")
+  option_names = File.read(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/data").split(",")
+  @options = Hash.new
+  option_names.each do |option|
+    @options[option] = 0
+  end
+  Dir.glob("data/polls/#{@poll_id}/opinions/**") do |opinion_file|
+    opinion = File.read(opinion_file).split(',')
+    opinion.each do |opinion_option|
+      if @options.key?(opinion_option) then
+        @options[opinion_option] += 1
+      end
+    end
+  end
   erb :poll
 end
 
