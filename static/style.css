@@ -3,3 +3,11 @@
   margin-right: auto;
   max-width: 768px;
 }
+
+.pure-table .vote-yes {
+  background-color: #C8E6C9;
+}
+
+.pure-table .vote-no {
+  background-color: #ffcdd2;
+}

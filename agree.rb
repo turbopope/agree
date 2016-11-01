@@ -36,12 +36,15 @@ get "/polls/:poll" do
   option_names.each do |option|
     @options[option] = 0
   end
-  Dir.glob("data/polls/#{@poll_id}/opinions/**/data") do |opinion_file|
-    puts opinion_file
-    opinion = File.read(opinion_file).split(',')
-    opinion.each do |opinion_option|
-      if @options.key?(opinion_option) then
-        @options[opinion_option] += 1
+  @opinions = Hash.new
+  Dir.glob("data/polls/#{@poll_id}/opinions/**/data") do |opinion_data_file|
+    opinion_name_file = opinion_data_file.split("/")[0...-1].join("/") + "/name"
+    name = File.read(opinion_name_file)
+    opinion = File.read(opinion_data_file).split(',')
+    @opinions[name] = opinion
+    opinion.each do |opinion_data_file|
+      if @options.key?(opinion_data_file) then
+        @options[opinion_data_file] += 1
       end
     end
   end

@@ -1,12 +1,38 @@
 <h3><%= @title %></h3>
 
 <form action="/polls/<%= @poll_id %>/opinions" method="post" class="pure-form">
-  <% @options.each do |option, votes| %>
-    <label for="<%= option %>" class="pure-checkbox">
-      <input id="<%= option %>" name="<%= option %>" type="checkbox" value="">
-      <%= option %> (<%= votes %> votes)
-    </label>
-  <% end %>
+  <table class="pure-table pure-table-bordered">
+    <thead>
+      <th>Option</th>
+      <th>Votes</th>
+      <% for name in @opinions.keys %>
+        <th><%= name %></th>
+      <% end %>
+    </thead>
+    <tbody>
+      <% @options.each do |option, votes| %>
+        <tr>
+
+          <td>
+            <label for="<%= option %>" class="pure-checkbox">
+              <input id="<%= option %>" name="<%= option %>" type="checkbox" value="">
+              <%= option %>
+            </label>
+          </td>
+
+          <td>
+            <%= votes %>
+          </td>
+
+          <% @opinions.each do |name, opinion| %>
+            <% vote = opinion.include?(option)? "yes" : "no" %>
+            <td class="vote-<%= vote %>"><%= vote %></td>
+          <% end %>
+
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
   <label for="name">Your Name</label>
   <input id="name" name="name" type="text" placeholder="tealover62"/>
