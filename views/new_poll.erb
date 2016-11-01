@@ -1,7 +1,11 @@
-<h1>Agree</h1>
-<p>Agree on Stuff</p>
+<form action="/polls" method="post" class="pure-form pure-form-stacked">
+    <legend>Create a new poll</legend>
 
-<form action="/polls" method="post">
-  <label>Options<input type="text" name="options"></input></label>
-  <input type="submit"/>
+    <label for="title">Title</label>
+    <input id="title" name="title" type="text" placeholder="Which tea should we buy?">
+
+    <label for="options">Options</label>
+    <input id="options" name="options" type="text" placeholder="Earl Grey, Jasmine, Darjeeling, ...">
+
+    <input type="submit" class="pure-button pure-button-primary"/>
 </form>

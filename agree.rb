@@ -15,15 +15,17 @@ end
 # Create new poll
 post "/polls" do
   options = params["options"]
+  title = params["title"]
   poll_id = SecureRandom.uuid
-  options.push("Fuck you I'm Spiderman")
   options = options.split(/,\s+/)
+  options.push("Fuck you I'm Spiderman")
   options = options.uniq
-  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}")
-  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions")
-  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/data", options.join(','))
-  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/time", DateTime.now)
-  redirect "/polls/#{poll_id}"
+  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{@poll_id}")
+  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/opinions")
+  File.write(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/data", options.join(','))
+  File.write(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/time", DateTime.now)
+  File.write(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/title", title)
+  redirect "/polls/#{@poll_id}"
 end
 
 # Participate in a poll and see results
@@ -42,6 +44,7 @@ get "/polls/:poll" do
       end
     end
   end
+  @title = File.read(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/title")
   erb :poll
 end
 

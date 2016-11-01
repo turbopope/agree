@@ -1,4 +1,4 @@
-Here are your options:
+<h3><%= @title %></h3>
 
 <form action="/polls/<%= @poll_id %>/opinions" method="post" class="pure-form">
   <% @options.each do |option, votes| %>
@@ -8,5 +8,5 @@ Here are your options:
       <%= option %> (<%= votes %> votes)
     </label>
   <% end %>
-  <input type="submit"/>
+  <input type="submit" class="pure-button pure-button-primary"/>
 </form>
