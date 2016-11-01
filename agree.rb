@@ -2,7 +2,7 @@
 
 
 require "sinatra"
-# require "fileutils"
+require "pp"
 
 
 set(:public_folder, File.dirname(__FILE__) + "/static")
@@ -15,28 +15,31 @@ end
 # Create new poll
 post "/polls" do
   options = params["options"]
-  id = SecureRandom.uuid
+  poll_id = SecureRandom.uuid
   options = options.split(/,\s+/)
   options = options.uniq
-  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{id}")
-  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{id}/opinions")
-  File.write(File.dirname(__FILE__) + "/data/polls/#{id}/data", options.join(','))
-  File.write(File.dirname(__FILE__) + "/data/polls/#{id}/time", DateTime.now)
-  redirect "/polls/#{id}"
+  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}")
+  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions")
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/data", options.join(','))
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/time", DateTime.now)
+  redirect "/polls/#{poll_id}"
 end
 
 # Participate in a poll and see results
 get "/polls/:poll" do
-  @options = File.read(File.dirname(__FILE__) + "/data/polls/#{params['poll']}").split(",")
+  @poll_id = params['poll']
+  @options = File.read(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/data").split(",")
   @options.push("Fuck you I'm Spiderman")
   erb :poll
 end
 
 # Enter a new opinion
 post "/polls/:poll/opinions" do
-  id = SecureRandom.uuid
+  opinion_id = SecureRandom.uuid
   poll_id = params["poll"]
-  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/data/opinions/#{id}", "voted")
+  opinion = request.POST.keys
+  opinion = opinion.uniq
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions/#{opinion_id}", opinion.join(','))
   redirect "/polls/#{poll_id}"
 end
 

@@ -1,10 +1,10 @@
 Here are your options:
 
-<form action="/polls/<%= @poll %>/opinions" method="post" class="pure-form">
+<form action="/polls/<%= @poll_id %>/opinions" method="post" class="pure-form">
   <% for option in @options %>
     <!-- <input type="checkbox" name="<%= option %>"></input> -->
     <label for="<%= option %>" class="pure-checkbox">
-      <input id="<%= option %>" type="checkbox" value="">
+      <input id="<%= option %>" name="<%= option %>" type="checkbox" value="">
       <%= option %>
     </label>
   <% end %>
