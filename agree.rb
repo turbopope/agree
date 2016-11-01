@@ -49,6 +49,7 @@ get "/polls/:poll" do
     end
   end
   @title = File.read(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/title")
+  @suggestions = @options.reduce({}){|h,(k,v)| (h[v] ||= []) << k;h}.max.reverse[0...-1][0] # lol
   erb :poll
 end
 

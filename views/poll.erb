@@ -45,3 +45,6 @@
     <button type="submit" class="pure-button pure-button-primary">Submit</button>
   </div>
 </form>
+
+<br>
+Suggestion: <strong><%= @suggestions.join("</strong> or <strong>") %></strong> (<%= @options[@suggestions[0]] %> votes)
