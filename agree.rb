@@ -20,12 +20,12 @@ post "/polls" do
   options = options.split(/,\s+/)
   options.push("Fuck you I'm Spiderman")
   options = options.uniq
-  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{@poll_id}")
-  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/opinions")
-  File.write(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/data", options.join(','))
-  File.write(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/time", DateTime.now)
-  File.write(File.dirname(__FILE__) + "/data/polls/#{@poll_id}/title", title)
-  redirect "/polls/#{@poll_id}"
+  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}")
+  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions")
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/data", options.join(','))
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/time", DateTime.now)
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/title", title)
+  redirect "/polls/#{poll_id}"
 end
 
 # Participate in a poll and see results
@@ -36,7 +36,8 @@ get "/polls/:poll" do
   option_names.each do |option|
     @options[option] = 0
   end
-  Dir.glob("data/polls/#{@poll_id}/opinions/**") do |opinion_file|
+  Dir.glob("data/polls/#{@poll_id}/opinions/**/data") do |opinion_file|
+    puts opinion_file
     opinion = File.read(opinion_file).split(',')
     opinion.each do |opinion_option|
       if @options.key?(opinion_option) then
@@ -51,10 +52,13 @@ end
 # Enter a new opinion
 post "/polls/:poll/opinions" do
   opinion_id = SecureRandom.uuid
+  name = params["name"]
   poll_id = params["poll"]
   opinion = request.POST.keys
   opinion = opinion.uniq
-  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions/#{opinion_id}", opinion.join(','))
+  Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions/#{opinion_id}")
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions/#{opinion_id}/data", opinion.join(','))
+  File.write(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions/#{opinion_id}/name", name)
   redirect "/polls/#{poll_id}"
 end
 

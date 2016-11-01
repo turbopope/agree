@@ -2,11 +2,14 @@
 
 <form action="/polls/<%= @poll_id %>/opinions" method="post" class="pure-form">
   <% @options.each do |option, votes| %>
-    <!-- <input type="checkbox" name="<%= option %>"></input> -->
     <label for="<%= option %>" class="pure-checkbox">
       <input id="<%= option %>" name="<%= option %>" type="checkbox" value="">
       <%= option %> (<%= votes %> votes)
     </label>
   <% end %>
+
+  <label for="name">Your Name</label>
+  <input id="name" name="name" type="text" placeholder="tealover62"/>
+
   <input type="submit" class="pure-button pure-button-primary"/>
 </form>
