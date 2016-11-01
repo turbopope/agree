@@ -1,0 +1,7 @@
+data/polls/*
+!data/polls/.keep
+bower_components
+static/css/*
+!static/css/.keep
+static/js/*
+!static/css/.keep
