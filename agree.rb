@@ -27,7 +27,6 @@ post "/polls" do
   title = params["title"]
   poll_id = SecureRandom.uuid
   options = options.split(/,\s+/)
-  options.push("Fuck you I'm Spiderman")
   options = options.uniq
   Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}")
   Dir.mkdir(File.dirname(__FILE__) + "/data/polls/#{poll_id}/opinions")
