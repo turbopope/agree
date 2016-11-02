@@ -1,11 +1,20 @@
-<form action="/polls" method="post" class="pure-form pure-form-stacked">
-    <legend>Create a new poll</legend>
+<h3>Create a new poll</h3>
 
+<form action="/polls" method="post" class="pure-form pure-form-stacked">
     <label for="title">Title</label>
     <input id="title" name="title" type="text" placeholder="Which tea should we buy?">
 
-    <label for="options">Options</label>
+    <label for="options">Options (Comma separated)</label>
     <input id="options" name="options" type="text" placeholder="Earl Grey, Jasmine, Darjeeling, ...">
 
     <input type="submit" class="pure-button pure-button-primary"/>
 </form>
+
+<br>
+<h3>Recent polls</h3>
+
+<ul>
+  <% @recent_polls.each do |id, name| %>
+    <li><a href="/polls/<%= id %>"><%= name %></a></li>
+  <% end %>
+</ul>

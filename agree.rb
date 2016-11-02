@@ -9,6 +9,15 @@ set(:public_folder, File.dirname(__FILE__) + "/static")
 
 # Landing page / create new poll
 get "/" do
+  @recent_polls = Hash.new
+  Dir.glob("data/polls/**/title") do |poll_name_file|
+    puts poll_name_file
+    id = poll_name_file.split("/")[2]
+    title = File.read(poll_name_file)
+    @recent_polls[id] = title
+  end
+  pp @recent_polls
+
   erb :new_poll
 end
 
